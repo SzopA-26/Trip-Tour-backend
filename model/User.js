@@ -4,10 +4,12 @@ const bcrypt = require('bcrypt');
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
-   id: { type: String, unique: true },
-   fname: { type: String },
-   lname: { type: String },
-   email: { type: String, unique: true },
+   fname: { type: String, required: true},
+   lname: { type: String, required: true },
+   email: { type: String, required: true, unique: true },
+   img: { type: String },
+   role: { type: String, enum: ['A', 'C', 'G'], default: 'C'},
+   phone_number: { type: String, required: true },
    // hashed_password: { type: String, default: '' },
    // role: {type: String, default: 'CUSTOMER'}
 });
