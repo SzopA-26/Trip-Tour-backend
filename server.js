@@ -35,25 +35,21 @@ app.use(bodyParser.json())
 //    }
 // })
 
-app.post('/api/user', async (req, res, next) => {
-   if (await user.create(req.body)) res.status(201).send("created")
-   else next()
-}, (req, res) => {
-   res.sendStatus(400)
+app.post('/api/user', async (req, res) => {
+   if (await user.create(req.body)) res.sendStatus(201)
+   else res.sendStatus(400)
 })
 
-app.post('/api/user/guide', async (req, res, next) => {
-   if (await user.createGuide(req.body)) res.status(201).send("created")
-   else next()
-}, (req, res) => {
-   res.sendStatus(400)
+app.post('/api/user/guide', async (req, res) => {
+   if (await user.createGuide(req.body)) res.sendStatus(201)
+   else res.sendStatus(400)
 })
 
 // app.use('/api/user', authMiddleware, userRouter())
 app.use('/api/user', userRouter())
 app.use('/api/trip', tripRouter())
 
-const PORT = 3000
+const PORT = 3030
 app.listen(PORT, () => {
    console.log('Server is running on PORT ' + PORT)
 })

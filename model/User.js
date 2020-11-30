@@ -10,7 +10,7 @@ const userSchema = new mongoose.Schema({
    role: { type: String, enum: ['A', 'C', 'G'], default: 'C'},
    phone_number: { type: String, required: true },
    birth_date: { type: Date, required: true},
-   guide_id: { type: ObjectId}
+   guide_id: { type: ObjectId }
    // hashed_password: { type: String, default: '' },
 })
 

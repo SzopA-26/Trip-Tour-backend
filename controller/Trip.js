@@ -27,8 +27,8 @@ TripSchema.methods.create = async (params) => {
    await trip.save((err) => {
       if (err) throw err
       console.log('Create trip success')
-      return true
    })
+   return true
 }
 
 module.exports = TripSchema.methods

@@ -35,14 +35,14 @@ UserSchema.methods.create = async (params) => {
       img: params.img,
       role: params.role,
       phone_number: params.phone_number,
-      birth_date: params.birth_date,
+      birth_date: params.birth_date
    })
    console.log(user)
    await user.save((err) => {
       if (err) throw err
-      console.log('Create user success')
-      return true
+      console.log('Create guide success')
    })
+   return true
 }
 
 UserSchema.methods.update = async (params) => {
@@ -57,16 +57,16 @@ UserSchema.methods.update = async (params) => {
    }}, (err) => {
       if (err) throw err
       console.log('Update user success')
-      return true
    }).exec()
+   return true
 }
 
 UserSchema.methods.deleteAll = async () => {
    await User.deleteMany({}, (err) => {
       if (err) throw err
       console.log('Delete all user')
-      return true
    })
+   return true
 }
 
 UserSchema.methods.createGuide = async (params) => {
@@ -100,8 +100,8 @@ UserSchema.methods.createGuide = async (params) => {
          throw err
       }
       console.log('Create guide success')
-      return true
    })
+   return true
 }
 
 module.exports = UserSchema.methods

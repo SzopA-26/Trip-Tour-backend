@@ -22,6 +22,5 @@ module.exports = () => {
       res.status(200).json(await user.getById(req.params.id))
    })
 
-
    return router
 }
