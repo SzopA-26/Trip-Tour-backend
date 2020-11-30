@@ -2,13 +2,13 @@ const Trip = require('../model/Trip').model
 const TripSchema = require('../model/Trip').schema
 
 TripSchema.methods.getAll = async () => {
-   const trips = await Trip.find({})
-   return trips;
+   let trips = await Trip.find({})
+   return trips
 }
 
 TripSchema.methods.getById = async (id) => {
-   const trip = await Trip.findById(id)
-   return trip;
+   let trip = await Trip.findById(id)
+   return trip
 }
 
 TripSchema.methods.create = async (params) => {
@@ -23,10 +23,11 @@ TripSchema.methods.create = async (params) => {
       meeting_point: params.meeting_point,
       tag: params.tag
    })
-   console.log(trip);
+   console.log(trip)
    await trip.save((err) => {
-      if (err) throw err;
-      console.log('Create trip success');
+      if (err) throw err
+      console.log('Create trip success')
+      return true
    })
 }
 

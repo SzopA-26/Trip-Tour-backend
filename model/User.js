@@ -1,15 +1,16 @@
-const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
+const mongoose = require('mongoose')
 
+const ObjectId = mongoose.Schema.ObjectId
 const userSchema = new mongoose.Schema({
    fname: { type: String, required: true},
    lname: { type: String, required: true },
    email: { type: String, required: true, unique: true },
+   password: { type: String, required: true},
    img: { type: String },
    role: { type: String, enum: ['A', 'C', 'G'], default: 'C'},
    phone_number: { type: String, required: true },
    birth_date: { type: Date, required: true},
-   guid_id: {type: String}
+   guide_id: { type: ObjectId}
    // hashed_password: { type: String, default: '' },
 })
 

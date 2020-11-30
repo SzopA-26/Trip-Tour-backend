@@ -6,15 +6,14 @@ module.exports = () => {
 
    router.route('/')
    .get(async (req, res) => {
-      res.status(200).json({trips: await trip.getAll()})
+      res.status(200).json(await trip.getAll())
    })
    .post(async (req, res) => {
-      await trip.create(req.body)
-      res.send(true)
+      if (await trip.create(req.body)) res.status(201).send("created")
    })
 
    router.get('/:id', async (req, res) => {
-      res.status(200).json({trip: await trip.getById(req.params.id)})
+      res.status(200).json(await trip.getById(req.params.id))
    })
 
    return router

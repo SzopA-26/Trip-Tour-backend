@@ -1,8 +1,7 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
 
 const guideInfoSchema = new mongoose.Schema({
-   citizen_id: { type: String, required: true },
-   passport_id: { type: String, required: true },
+   citizen_id: { type: String, required: true, unique: true },
    selfie_img: { type: String, required: true },
    type: { type: String, enum: [
       'SILVER', 

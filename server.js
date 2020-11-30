@@ -1,20 +1,58 @@
 const mongoose = require('mongoose')
 const express = require('express')
 const bodyParser = require('body-parser')
-const app = express()
+const { nanoid } = require('nanoid')
+const user = require('./controller/User')
 const userRouter = require('./router/User')
 const tripRouter = require('./router/Trip')
+const app = express()
 
-mongoose.connect('mongodb://localhost:27017/trip', {useNewUrlParser: true, useUnifiedTopology: true});
-const db = mongoose.connection;
+mongoose.connect('mongodb://localhost:27017/trip', {useNewUrlParser: true, useUnifiedTopology: true})
+const db = mongoose.connection
 
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
-app.use('/api/user', userRouter())
+let tokens = {}
+
+const authMiddleware = (req, res, next) => {
+   console.log(req.headers.authorization)
+   if (Object.values(tokens).indexOf(req.headers.authorization) > -1) {
+      next()
+   } else res.status(401).send("unauthorized")
+}
+
+app.post('/api/login', async (req, res) => {
+   if (await user.auth(req.body)) {
+      let token = nanoid()
+      let email = req.body.email
+      tokens[email] = token
+      res.json({
+         _token: token
+      })
+   } else {
+      res.status().send("login fail")
+   }
+})
+
+app.post('/api/user', async (req, res, next) => {
+   if (await user.create(req.body)) res.status(201).send("created")
+   else next()
+}, (req, res) => {
+   res.sendStatus(400)
+})
+
+app.post('/api/user/guide', async (req, res, next) => {
+   if (await user.createGuide(req.body)) res.status(201).send("created")
+   else next()
+}, (req, res) => {
+   res.sendStatus(400)
+})
+
+app.use('/api/user', authMiddleware, userRouter())
 app.use('/api/trip', tripRouter())
 
 const PORT = 3000
 app.listen(PORT, () => {
-   console.log('Server is running on PORT ' + PORT);
+   console.log('Server is running on PORT ' + PORT)
 })
