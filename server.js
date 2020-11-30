@@ -1,11 +1,13 @@
 const mongoose = require('mongoose')
 const express = require('express')
+const cors = require('cors')
 const bodyParser = require('body-parser')
 const { nanoid } = require('nanoid')
 const user = require('./controller/User')
 const userRouter = require('./router/User')
 const tripRouter = require('./router/Trip')
 const app = express()
+app.use(cors())
 
 mongoose.connect('mongodb://localhost:27017/trip', {useNewUrlParser: true, useUnifiedTopology: true})
 const db = mongoose.connection
@@ -36,14 +38,20 @@ app.use(bodyParser.json())
 // })
 
 app.post('/api/user', async (req, res) => {
-   if (await user.create(req.body)) res.sendStatus(201)
-   else res.sendStatus(400)
+   try {
+      await user.create(req.body)
+      res.sendStatus(201)
+   } catch (e) {
+      res.sendStatus(400)
+   }
 })
 
 app.post('/api/user/guide', async (req, res) => {
    if (await user.createGuide(req.body)) res.sendStatus(201)
    else res.sendStatus(400)
 })
+
+
 
 // app.use('/api/user', authMiddleware, userRouter())
 app.use('/api/user', userRouter())

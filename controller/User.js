@@ -38,15 +38,12 @@ UserSchema.methods.create = async (params) => {
       birth_date: params.birth_date
    })
    console.log(user)
-   await user.save((err) => {
-      if (err) throw err
-      console.log('Create guide success')
-   })
-   return true
+   await user.save()
 }
 
 UserSchema.methods.update = async (params) => {
    let user = await User.findById(params.id)
+   if (!user) return false
    user.update({ $set: {
       fname: params.fname,
       lname: params.lname,
@@ -58,7 +55,6 @@ UserSchema.methods.update = async (params) => {
       if (err) throw err
       console.log('Update user success')
    }).exec()
-   return true
 }
 
 UserSchema.methods.deleteAll = async () => {
@@ -66,7 +62,6 @@ UserSchema.methods.deleteAll = async () => {
       if (err) throw err
       console.log('Delete all user')
    })
-   return true
 }
 
 UserSchema.methods.createGuide = async (params) => {
@@ -101,7 +96,27 @@ UserSchema.methods.createGuide = async (params) => {
       }
       console.log('Create guide success')
    })
-   return true
+}
+
+UserSchema.methods.getAllGuide = async () => {
+   let guides = await User.find({ role: 'G' })
+   return guides
+}
+
+UserSchema.methods.updateGuideInfo = async (params) => {
+   let guideInfo = await GuideInfo.findById(params.id)
+   if (!guideInfo) return false
+   guideInfo.update({ $set: {
+      status: params.status,
+      citizen_id: params.citizen_id,
+      selfie_img: params.selfie_img,
+      type: params.type,
+      license_id: params.license_id,
+      bankaccount_number: params.bankaccount_number
+   }}, (err) => {
+      if (err) throw err
+      console.log('Update guideInfo success')
+   }).exec()
 }
 
 module.exports = UserSchema.methods

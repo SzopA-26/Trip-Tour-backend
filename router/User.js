@@ -9,17 +9,46 @@ module.exports = () => {
       res.status(200).json(await user.getAll())
    })
    .post(async (req, res) => {
-      if (await user.create(req.body)) res.status(201).send("created")
+      try {
+         await user.create(req.body)
+         res.sendStatus(201)
+      } catch (e) {
+         res.sendStatus(400)
+      }
    })
    .put(async (req, res) => {
-      if (await user.update(req.body)) res.status(201).send("updated")
+      try {
+         await user.update(req.body)
+         res.status(201).send('updated')
+      } catch (e) {
+         res.sendStatus(400)
+      }
    })
    .delete(async(req, res) => {
-      if (await user.deleteAll()) res.status(200).send("deleted")
+      try {
+         await user.deleteAll()
+         res.status(201).send('deleted')
+      } catch (e) {
+         res.sendStatus(400)
+      }
    })
 
-   router.get('/:id', async (req, res) => {
+   router.get('/id/:id', async (req, res) => {
+      console.log(req.params.id);
       res.status(200).json(await user.getById(req.params.id))
+   })
+
+   router.route('/guide')
+   .get(async (req, res) => {
+      res.status(200).json(await user.getAllGuide())
+   })
+   .put(async (req, res) => {
+      try {
+         await user.updateGuideInfo(req.body)
+         res.status(201).send('updated')
+      } catch (e) {
+         res.sendStatus(400)
+      }
    })
 
    return router

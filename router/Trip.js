@@ -9,7 +9,12 @@ module.exports = () => {
       res.status(200).json(await trip.getAll())
    })
    .post(async (req, res) => {
-      if (await trip.create(req.body)) res.status(201).send("created")
+      try {
+         await trip.create(req.body)
+         res.status(201).send("created")
+      } catch (e) {
+         res.sendStatus(400)
+      }
    })
 
    router.get('/:id', async (req, res) => {

@@ -11,7 +11,6 @@ const userSchema = new mongoose.Schema({
    phone_number: { type: String, required: true },
    birth_date: { type: Date, required: true},
    guide_id: { type: ObjectId }
-   // hashed_password: { type: String, default: '' },
 })
 
 module.exports.model = mongoose.model('User', userSchema)
