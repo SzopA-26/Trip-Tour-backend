@@ -7,8 +7,8 @@ const tripSchema = new mongoose.Schema({
    detail: { type: String },
    start_time: { type: String, required: true },
    end_time: { type: String, required: true },
-   price: { type: Double },
-   province_id: { type: String },
+   price: { type: Number, required: true },
+   province_id: { type: String, required: true },
    meeting_point: { type: String, required: true},
    tag: { type: String, enum: [
       'Art & Craft Workshops',
