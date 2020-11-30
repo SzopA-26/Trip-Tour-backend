@@ -20,7 +20,7 @@ app.use(bodyParser.json())
 //    if (Object.values(tokens).indexOf(req.headers.authorization) > -1) {
 //       next()
 //    } else res.sendStatus(401)
-}
+// }
 
 // app.post('/api/login', async (req, res) => {
 //    if (await user.auth(req.body)) {
