@@ -1,20 +1,17 @@
 const express = require('express')
-const trip = require('../controller/Trip')
-const job = require('../controller/Job')
-const multer  = require('multer')
-const upload = multer({ dest: '../uploads/trip_img' })
+const tour = require('../controller/Tour')
 
 module.exports = () => {
    const router = express.Router()
 
    router.route('/')
    .get(async (req, res) => {
-      res.status(200).json(await trip.getAll())
+      res.status(200).send(await tour.getAll())
    })
-   .post( async (req, res) => {
+   .post(async (req, res) => {
       try {
          console.log(req.body);
-         await trip.create(req.body)
+         await tour.create(req.body)
          res.sendStatus(201)
       } catch (e) {
          res.sendStatus(400)
@@ -23,7 +20,11 @@ module.exports = () => {
    })
 
    router.get('/:id', async (req, res) => {
-      res.status(200).json(await trip.getById(req.params.id))
+      res.status(200).send(await tour.getById(req.params.id))
+   })
+
+   router.get('/job/:job_id', async (req, res) => {
+      res.status(200).send(await tour.getByJobId(req.params.job_id))
    })
 
    return router

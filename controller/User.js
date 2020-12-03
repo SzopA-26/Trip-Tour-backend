@@ -64,38 +64,29 @@ UserSchema.methods.deleteAll = async () => {
    })
 }
 
-UserSchema.methods.createGuide = async (params) => {
+UserSchema.methods.createGuide = async (params, file) => {
    let guideInfo = new GuideInfo({
       citizen_id: params.citizen_id,
-      selfie_img: params.selfie_img,
+      selfie_img: './' + file.path,
       type: params.type,
       license_id: params.license_id,
       bankaccount_number: params.bankaccount_number 
    })
    console.log(guideInfo)
-   await guideInfo.save((err) => {
-      if (err) throw err
-      console.log('Create guideInfo success')
-   })
+   await guideInfo.save()
    let user = new User({
       fname: params.fname,
       lname: params.lname,
       email: params.email,
       password: bcrypt.hashSync(params.password, salt),
       img: params.img,
-      role: params.role,
+      role: 'G',
       phone_number: params.phone_number,
       birth_date: params.birth_date,
       guide_id: guideInfo._id,
    })
    console.log(user)
-   await user.save((err) => {
-      if (err) {
-         GuideInfo.remove({ _id: guideInfo._id })
-         throw err
-      }
-      console.log('Create guide success')
-   })
+   await user.save()
 }
 
 UserSchema.methods.getAllGuide = async () => {
@@ -109,13 +100,43 @@ UserSchema.methods.updateGuideInfo = async (params) => {
    guideInfo.update({ $set: {
       status: params.status,
       citizen_id: params.citizen_id,
-      selfie_img: params.selfie_img,
       type: params.type,
       license_id: params.license_id,
       bankaccount_number: params.bankaccount_number
    }}, (err) => {
       if (err) throw err
       console.log('Update guideInfo success')
+   }).exec()
+}
+
+UserSchema.methods.getUnverifyGuide = async () => {
+   let guides = await User.find({ role: 'G' })
+   let unverifyGuides = []
+   for (let guide of guides) {
+      let guideInfo = await GuideInfo.findById(guide.guide_id)
+      if (!guideInfo) {
+         console.log(guide);
+      }
+      if (guideInfo.status === "UNVERIFIED") {
+         unverifyGuides.push(guide)
+      }
+   }
+   return unverifyGuides
+}
+
+UserSchema.methods.getGuideInfo = async (id) => {
+   let guideInfo = await GuideInfo.findById(id)
+   return guideInfo
+}
+
+UserSchema.methods.updateGuideVerify = async (id) => {
+   let guideInfo = await GuideInfo.findById(id)
+   if (!guideInfo) return false
+   await guideInfo.update({ $set: {
+      status: 'AVAILABLE'
+   }}, (err) => {
+      if (err) throw err
+      console.log('Update guide status success')
    }).exec()
 }
 

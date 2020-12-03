@@ -1,6 +1,6 @@
-const { Timestamp, Double } = require('mongodb')
 const mongoose = require('mongoose')
 
+const ObjectId = mongoose.Schema.ObjectId
 const tripSchema = new mongoose.Schema({
    name: { type: String, required: true },
    address: { type: String, required: true },
@@ -8,8 +8,11 @@ const tripSchema = new mongoose.Schema({
    start_time: { type: String, required: true },
    end_time: { type: String, required: true },
    price: { type: Number, required: true },
-   province_id: { type: String, required: true },
+   province_id: { type: ObjectId, required: true },
+   // province: [{type: mongoose.Schema.Types.ObjectId, ref: "Province"}],
    meeting_point: { type: String, required: true},
+   person: {type: Number, required: true},
+   img: {type: String},
    tag: { type: String, enum: [
       'Art & Craft Workshops',
       'Cooking',

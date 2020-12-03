@@ -8,20 +8,13 @@ module.exports = () => {
    .get(async (req, res) => {
       res.status(200).json(await user.getAll())
    })
-   .post(async (req, res) => {
-      try {
-         await user.create(req.body)
-         res.sendStatus(201)
-      } catch (e) {
-         res.sendStatus(400)
-      }
-   })
    .put(async (req, res) => {
       try {
          await user.update(req.body)
          res.status(201).send('updated')
       } catch (e) {
          res.sendStatus(400)
+         throw e
       }
    })
    .delete(async(req, res) => {
@@ -30,6 +23,7 @@ module.exports = () => {
          res.status(201).send('deleted')
       } catch (e) {
          res.sendStatus(400)
+         throw e
       }
    })
 
@@ -48,7 +42,16 @@ module.exports = () => {
          res.status(201).send('updated')
       } catch (e) {
          res.sendStatus(400)
+         throw e
       }
+   })
+
+   router.get('/guide/guideInfo/:guideInfo', async (req, res) => {
+      res.status(200).json(await user.getGuideInfo(req.params.guideInfo))
+   })
+
+   router.get('/guide/unverify', async (req, res) => {
+      res.status(200).json(await user.getUnverifyGuide())
    })
 
    return router

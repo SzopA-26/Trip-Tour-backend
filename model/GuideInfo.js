@@ -16,7 +16,7 @@ const guideInfoSchema = new mongoose.Schema({
       'PURPLE',
       'BROWN'
    ], required: true },
-   license_id: { type: String, required: true },
+   license_id: { type: String, required: true, unique: true},
    bankaccount_number: { type: String, required: true } 
 })
 
